@@ -261,7 +261,7 @@ TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_invalidGroup_isNoO
 
 TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_validInputs_hasNoError) {
     const QString location =
-            getTestDir().filePath(QStringLiteral("id3-test-data/cover-test.png"));
+            getTestDir().filePath(QStringLiteral("sine-30.wav"));
     const QString group = QStringLiteral("[Channel1]");
     const QString script = QStringLiteral("engine.loadLocationToPlayer('%1', '%2');")
                                    .arg(location, group);
