@@ -29,8 +29,11 @@ constexpr double kBrakeRampToRate = 0.01;
 } // namespace
 
 ControllerScriptInterfaceLegacy::ControllerScriptInterfaceLegacy(
-        ControllerScriptEngineLegacy* m_pEngine, const RuntimeLoggingCategory& logger)
+        ControllerScriptEngineLegacy* m_pEngine,
+        const RuntimeLoggingCategory& logger,
+        PlayerManagerInterface* pPlayerManager)
         : m_pScriptEngineLegacy(m_pEngine),
+          m_pPlayerManager(pPlayerManager),
           m_logger(logger) {
     // Pre-allocate arrays for average number of virtual decks
     m_intervalAccumulator.resize(kDecks);
@@ -171,6 +174,24 @@ void ControllerScriptInterfaceLegacy::setValue(
             coScript->set(newValue);
         }
     }
+}
+
+void ControllerScriptInterfaceLegacy::loadLocationToPlayer(
+        const QString& location, const QString& group) {
+    if (!m_pPlayerManager) {
+        qWarning() << "[engine.loadLocationToPlayer] PlayerManager not available; ignoring"
+                   << location << "->" << group;
+        return;
+    }
+    if (location.isEmpty()) {
+        qWarning() << "[engine.loadLocationToPlayer] empty location for group" << group;
+        return;
+    }
+    if (!group.startsWith(QChar('['))) {
+        qWarning() << "[engine.loadLocationToPlayer] invalid group" << group;
+        return;
+    }
+    m_pPlayerManager->slotLoadLocationToPlayer(location, group, false);
 }
 
 double ControllerScriptInterfaceLegacy::getParameter(const QString& group, const QString& name) {

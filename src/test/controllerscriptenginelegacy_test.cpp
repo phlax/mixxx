@@ -72,7 +72,6 @@ class ControllerScriptEngineLegacyTest : public ControllerScriptEngineLegacy,
         mixxx::Time::setTestMode(true);
         mixxx::Time::addTestTime(10ms);
         QThread::currentThread()->setObjectName("Main");
-        initialize();
 
         // This setup mirrors coreservices -- it would be nice if we could use coreservices instead
         // but it does a lot of local disk / settings setup.
@@ -123,6 +122,8 @@ class ControllerScriptEngineLegacyTest : public ControllerScriptEngineLegacy,
         m_pPlayerManager->bindToLibrary(m_pLibrary.get());
         ControllerScriptEngineBase::registerPlayerManager(m_pPlayerManager);
         ControllerScriptEngineBase::registerTrackCollectionManager(m_pTrackCollectionManager);
+
+        initialize();
     }
 
     void loadTrackSync(const QString& trackLocation) {
@@ -242,6 +243,36 @@ TEST_F(ControllerScriptEngineLegacyTest, setValue) {
     auto co = std::make_unique<ControlObject>(ConfigKey("[Test]", "co"));
     EXPECT_TRUE(evaluateAndAssert("engine.setValue('[Test]', 'co', 1.0);"));
     EXPECT_DOUBLE_EQ(1.0, co->get());
+}
+
+TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_methodExposed) {
+    EXPECT_EQ(
+            QStringLiteral("function"),
+            evaluate("typeof engine.loadLocationToPlayer").toString());
+}
+
+TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_emptyLocation_isNoOp) {
+    EXPECT_TRUE(evaluateAndAssert("engine.loadLocationToPlayer('', '[Channel1]');"));
+}
+
+TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_invalidGroup_isNoOp) {
+    EXPECT_TRUE(evaluateAndAssert("engine.loadLocationToPlayer('/tmp/test.mp3', 'Channel1');"));
+}
+
+TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_validInputs_hasNoError) {
+    const QString location =
+            getTestDir().filePath(QStringLiteral("id3-test-data/cover-test.png"));
+    const QString group = QStringLiteral("[Channel1]");
+    const QString script = QStringLiteral("engine.loadLocationToPlayer('%1', '%2');")
+                                   .arg(location, group);
+    EXPECT_TRUE(evaluateAndAssert(script));
+}
+
+TEST_F(ControllerScriptEngineLegacyTest, loadLocationToPlayer_noPlayerManager_isNoOp) {
+    ControllerScriptInterfaceLegacy scriptInterface(this, logger, nullptr);
+
+    scriptInterface.loadLocationToPlayer(
+            QStringLiteral("/tmp/test.mp3"), QStringLiteral("[Channel1]"));
 }
 
 TEST_F(ControllerScriptEngineLegacyTest, getValue_InvalidKey) {

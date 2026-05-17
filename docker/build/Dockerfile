@@ -1,0 +1,65 @@
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cmake \
+    ninja-build \
+    g++ \
+    pkg-config \
+    libavformat-dev \
+    libbenchmark-dev \
+    libchromaprint-dev \
+    libebur128-dev \
+    libfaad-dev \
+    libfftw3-dev \
+    libflac-dev \
+    libgl1-mesa-dev \
+    libgmock-dev \
+    libgtest-dev \
+    libhidapi-dev \
+    libid3tag0-dev \
+    liblilv-dev \
+    libmad0-dev \
+    libmodplug-dev \
+    libmp3lame-dev \
+    libmsgsl-dev \
+    libopus-dev \
+    libopusfile-dev \
+    libportmidi-dev \
+    libprotobuf-dev \
+    libqt6core5compat6-dev \
+    libqt6opengl6-dev \
+    libqt6sql6-sqlite \
+    libqt6svg6-dev \
+    librubberband-dev \
+    libshout-idjc-dev \
+    libsndfile1-dev \
+    libsoundtouch-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libtag1-dev \
+    libudev-dev \
+    libupower-glib-dev \
+    libusb-1.0-0-dev \
+    libwavpack-dev \
+    lv2-dev \
+    portaudio19-dev \
+    protobuf-compiler \
+    qt6-base-private-dev \
+    qt6-declarative-private-dev \
+    qt6-multimedia-dev \
+    qt6-shadertools-dev \
+    qtkeychain-qt6-dev \
+    qml6-module-qt-labs-folderlistmodel \
+    qml6-module-qt-labs-qmlmodels \
+    qml6-module-qtmultimedia \
+    qml6-module-qt5compat-graphicaleffects \
+    qml6-module-qtqml-workerscript \
+    qml6-module-qtquick-controls \
+    qml6-module-qtquick-dialogs \
+    qml6-module-qtquick-layouts \
+    qml6-module-qtquick-shapes \
+    qml6-module-qtquick-templates \
+    qml6-module-qtquick-window \
+    && rm -rf /var/lib/apt/lists/*

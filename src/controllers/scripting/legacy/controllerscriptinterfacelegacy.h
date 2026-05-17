@@ -9,6 +9,7 @@
 
 class ControllerScriptEngineLegacy;
 class ControlObjectScript;
+class PlayerManagerInterface;
 class ScriptConnection;
 class ConfigKey;
 
@@ -51,7 +52,8 @@ class ControllerScriptInterfaceLegacy : public QObject {
     Q_ENUM(Charset)
 
     ControllerScriptInterfaceLegacy(ControllerScriptEngineLegacy* m_pEngine,
-            const RuntimeLoggingCategory& logger);
+            const RuntimeLoggingCategory& logger,
+            PlayerManagerInterface* pPlayerManager);
 
     virtual ~ControllerScriptInterfaceLegacy();
 
@@ -59,6 +61,14 @@ class ControllerScriptInterfaceLegacy : public QObject {
     Q_INVOKABLE QObject* getPlayer(const QString& group);
     Q_INVOKABLE double getValue(const QString& group, const QString& name);
     Q_INVOKABLE void setValue(const QString& group, const QString& name, double newValue);
+    /// Load a track from a file location onto the given player group.
+    /// The location may point to a file inside or outside the library.
+    /// The group is typically "[ChannelN]", "[SamplerN]", or "[PreviewDeckN]".
+    /// Loading does not auto-play the track.
+    ///
+    /// Example:
+    ///   engine.loadLocationToPlayer("/home/me/music/track.flac", "[Channel1]");
+    Q_INVOKABLE void loadLocationToPlayer(const QString& location, const QString& group);
     Q_INVOKABLE double getParameter(const QString& group, const QString& name);
     Q_INVOKABLE void setParameter(const QString& group, const QString& name, double newValue);
     Q_INVOKABLE double getParameterForValue(
@@ -155,5 +165,6 @@ class ControllerScriptInterfaceLegacy : public QObject {
     double getDeckRate(const QString& group);
 
     ControllerScriptEngineLegacy* m_pScriptEngineLegacy;
+    PlayerManagerInterface* const m_pPlayerManager;
     const RuntimeLoggingCategory m_logger;
 };
