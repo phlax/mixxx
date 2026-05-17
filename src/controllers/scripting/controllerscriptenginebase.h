@@ -55,7 +55,7 @@ class ControllerScriptEngineBase : public QObject {
         return m_bTesting;
     }
 
-    static void registerPlayerManager(std::shared_ptr<PlayerManager> pPlayerManager);
+    static void registerPlayerManager(std::shared_ptr<PlayerManagerInterface> pPlayerManager);
 
     static void registerTrackCollectionManager(
             std::shared_ptr<TrackCollectionManager> pTrackCollectionManager);
@@ -64,6 +64,10 @@ class ControllerScriptEngineBase : public QObject {
     void beforeShutdown();
 
   protected:
+    PlayerManagerInterface* playerManager() const {
+        return s_pPlayerManager.get();
+    }
+
     virtual void shutdown();
 
     void scriptErrorDialog(const QString& detailedError, const QString& key, bool bFatal = false);
@@ -95,7 +99,7 @@ class ControllerScriptEngineBase : public QObject {
     bool m_bTesting;
 
   private:
-    static inline std::shared_ptr<PlayerManager> s_pPlayerManager;
+    static inline std::shared_ptr<PlayerManagerInterface> s_pPlayerManager;
     static inline std::shared_ptr<TrackCollectionManager> s_pTrackCollectionManager;
 
 #ifdef MIXXX_USE_QML

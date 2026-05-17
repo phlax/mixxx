@@ -145,6 +145,7 @@ class MockPlayerManager : public PlayerManagerInterface {
     MOCK_CONST_METHOD1(getDeckBase, BaseTrackPlayer*(int));
     MOCK_CONST_METHOD1(getPreviewDeck, PreviewDeck*(int));
     MOCK_CONST_METHOD1(getSampler, Sampler*(int));
+    MOCK_METHOD3(slotLoadLocationToPlayer, void(const QString&, const QString&, bool));
 
     int numberOfDecks() const {
         return static_cast<int>(numDecks.get());

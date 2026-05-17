@@ -31,7 +31,7 @@ ControllerScriptEngineBase::ControllerScriptEngineBase(
 }
 
 void ControllerScriptEngineBase::registerPlayerManager(
-        std::shared_ptr<PlayerManager> pPlayerManager) {
+        std::shared_ptr<PlayerManagerInterface> pPlayerManager) {
     ControllerScriptEngineBase::s_pPlayerManager = pPlayerManager;
 }
 

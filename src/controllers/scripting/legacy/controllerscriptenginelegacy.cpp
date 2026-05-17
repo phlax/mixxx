@@ -339,7 +339,7 @@ bool ControllerScriptEngineLegacy::initialize() {
     // Make this ControllerScriptHandler instance available to scripts as 'engine'.
     QJSValue engineGlobalObject = m_pJSEngine->globalObject();
     ControllerScriptInterfaceLegacy* legacyScriptInterface =
-            new ControllerScriptInterfaceLegacy(this, m_logger);
+            new ControllerScriptInterfaceLegacy(this, m_logger, playerManager());
 
     auto engine = m_pJSEngine->newQObject(legacyScriptInterface);
     auto meta = m_pJSEngine->newQMetaObject(&ControllerScriptInterfaceLegacy::staticMetaObject);

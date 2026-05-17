@@ -53,6 +53,9 @@ class PlayerManagerInterface : public QObject {
 
     virtual int numberOfSamplers() const = 0;
 
+    virtual void slotLoadLocationToPlayer(
+            const QString& location, const QString& group, bool play) = 0;
+
   signals:
     // Emitted when the number of decks changes.
     void numberOfDecksChanged(int decks);
@@ -205,7 +208,8 @@ class PlayerManager : public PlayerManagerInterface {
 #else
     void slotLoadTrackToPlayer(TrackPointer pTrack, const QString& group, bool play);
 #endif
-    void slotLoadLocationToPlayer(const QString& location, const QString& group, bool play);
+    void slotLoadLocationToPlayer(
+            const QString& location, const QString& group, bool play) override;
     void slotLoadLocationToPlayerMaybePlay(const QString& location, const QString& group);
 
     void slotCloneDeck(const QString& source_group, const QString& target_group);
